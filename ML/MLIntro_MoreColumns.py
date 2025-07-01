@@ -6,6 +6,7 @@
 import pandas as pd
 from sklearn import tree
 import io
+import os
 
 titanic_train = pd.read_csv("C:/Users/SJilla/train.csv")
 
