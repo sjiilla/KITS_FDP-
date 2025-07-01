@@ -1,0 +1,28 @@
+Day2: Decission Tree basics
+Pseudo Code:
+
+Import Pandas as PD (To store the Excel data)
+
+Step1: Read Train Data
+Step2: pd.readcsv(Specify the Excel Path)
+Step3: Store the data in DataFrame
+Step4: DataFrame(DF) = Select only 3-4 colums
+Step5: Feed the selected data to machine Learnning Algorithm to find the patterns/prediction
+
+Algorithm:
+Step6: From SKLearn Import DecissionTree as dt
+X_Train = TrainData(Pclass, Age, Fare)
+Y_Train = TrainData.Survived
+Model1 = DT.Fit(X_Axis, Y_Axis)
+-----------------------
+Read Test Data()
+X_Test = TestData(Pclass, Age, Fare)
+Y_Test = DT.Predict(X_Test)
+---------
+Check the score:
+1. Create new CSV file with 2 colums
+TestPassenegerID, and Predicted Survived Value)
+
+
+
+
