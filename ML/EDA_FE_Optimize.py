@@ -39,8 +39,8 @@ def extract_title(name):
      return name.split(',')[1].split('.')[0].strip()
 titanic['Title'] = titanic['Name'].map(extract_title)
 
-titanic_test.Fare[titanic_train['Age'].isnull()] = titanic_train['Age'].mean()
-titanic_test.Fare[titanic_train['Fare'].isnull()] = titanic_train['Fare'].mean()
+titanic.Age[titanic['Age'].isnull()] = titanic['Age'].mean()
+titanic.Fare[titanic['Fare'].isnull()] = titanic['Fare'].mean()
 
 #creaate categorical age column from age
 #It's always a good practice to create functions so that the same can be applied on test data as well
@@ -107,4 +107,4 @@ X_test.info()
 titanic_test['Survived'] = TitanicModel.predict(X_test)
 os.chdir("C:/Users/S Jilla/")
 
-titanic_test.to_csv('Submission_EDA_FE_Optimize2.csv', columns=['PassengerId','Survived'], index=False)
+titanic_test.to_csv('Submission_EDA_FE_Optimize3.csv', columns=['PassengerId','Survived'], index=False)
