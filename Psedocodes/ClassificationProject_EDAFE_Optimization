@@ -1,0 +1,67 @@
+Day3: Project 
+Improvise/Optimize Decision Tree
+Exploratory Data Analysis(EDA)
+Feature Engineering(FE)
+Cross Validation of data(CV)
+
+Pseudo Code:
+
+Import Pandas as PD (To store the Excel data)
+
+Step1: Read Train Data
+Step2: pd.readcsv(Specify the Excel Path)
+Step3: Store the data in DataFrame
+Step4. Read Test Data
+Step5: Concatenate Train + Test Data and store in TitaniFullData DataFrame
+
+Step4: DataFrame(DF) = Select maximum number of columns/Features
+EDA:
+Fill missing Age and Fare:
+Where ever Age and Fare ISNULL = Take Avg() and fill
+
+FE:
+Extract Title from name column
+Title = Split(firtstname, .lastname)
+
+Creation of new features:
+Concatenate SpiSp+ParCh:
+FamilySize = Sibsp+ParCh+1
+
+Categorize/Group Age column:
+0-12 Children
+13-20 Teens
+20-50 Middle Age
+50 and Above Old Age
+
+Also categorize family size
+Small(1-3)
+Medium(4-7)
+Large family(>7)
+
+Do 1-Hot encoding of Categorical columns:
+pd.get_dummies(Pcalss, Embarked, Sex, 
+FamilySize, AgeGroup, Title)
+
+Step5: Feed the selected data to machine Learnning Algorithm to find the patterns/prediction
+
+Optimize Decession Tree:
+dt.DecissionTreeClassifier(Min_Sample_Split = 10, Max_Deapth = 8, Criterion = Gini/Entropy, Random_State = 10, CV=10)
+
+Cross Validation:
+CV = 10
+----------
+Split Train and Test seperately
+Algorithm:
+Step6: From SKLearn Import DecissionTree as dt
+X_Train = TrainData(Pclass, Age, Fare)
+Y_Train = TrainData.Survived
+Model1 = DT.Fit(X_Axis, Y_Axis)
+Model1.CV.score()
+-----------------------
+Read Test Data()
+X_Test = TestData(Pclass, Age_Group, Fare, Title, FamilySize, Embarked, Sex......)
+Y_Test = DT.Predict(X_Test)
+---------
+Check the score:
+1. Create new CSV file with 2 colums
+TestPassenegerID, and Predicted Survived Value)
