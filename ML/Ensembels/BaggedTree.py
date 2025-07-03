@@ -1,16 +1,13 @@
-import os
+import os, io, pydotplus
 import pandas as pd
 from sklearn import tree
 from sklearn import model_selection
 from sklearn import ensemble #This is what we introduced here.
-from sklearn.tree import plot_tree
-import matplotlib.pyplot as plt
 
 #returns current working directory 
 os.getcwd()
 #changes working directory
 os.chdir("C:/Users/SJilla/")
-
 titanic_train = pd.read_csv("train.csv")
 
 #EDA
@@ -26,16 +23,7 @@ y_train = titanic_train['Survived']
 
 #cv accuracy for bagged tree ensemble
 dt = tree.DecisionTreeClassifier()
-#Appy ensemble.BaggingClassificatier
-#Base_Estimator = dt, n_estimators = 5(no. of trees)
-#bt1 = ensemble.BaggingClassifier(estimator = dt, n_estimators = 3)
-#bt1.fit(X_train, y_train)
-#scores = model_selection.cross_val_score(bt1, X_train, y_train, cv = 10)
-#print(scores)
-#print(scores.mean())
-
-#Alternative way with parameters and use GridSearchCV instead of cross_val_score
-bt2 = ensemble.BaggingClassifier(estimator = dt, n_estimators = 3)
+bt2 = ensemble.BaggingClassifier(estimator = dt, n_estimators = 5)
 bag_grid = {'criterion':['entropy','gini']}
 
 bag_grid_estimator = model_selection.GridSearchCV(bt2, bag_grid, n_jobs=6)
@@ -43,3 +31,15 @@ bt2.fit(X_train, y_train)
 scores = model_selection.cross_val_score(bt2, X_train, y_train, cv = 10)
 print(scores)
 print(scores.mean())
+
+os.chdir("C:/Users/S Jilla/")
+n_tree = 0
+for est in bt2.estimators_: 
+    dot_data = io.StringIO()
+    #tmp = est.tree_
+    tree.export_graphviz(est, out_file = dot_data, feature_names = X_train.columns)
+    graph = pydotplus.graph_from_dot_data(dot_data.getvalue())#[0] 
+    graph.write_pdf("BagTree" + str(n_tree) + ".pdf")
+    n_tree = n_tree + 1
+    
+os.getcwd()
