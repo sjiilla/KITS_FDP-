@@ -1,0 +1,24 @@
+Pseduo code:
+Voting:
+1. Read Train Data
+pd.readcsv()
+2. EDA
+3. FE
+4. Build 3 Or 5 algorithms:
+DT = DT.DecissionTreeClassifier(CV..)
+BT = ensemble.BaggingClassifer(no.ofTrees, ,)
+AB = ensemble.AdaboostingClassifier
+(no.of Trees,LR, ,)
+---------
+Build voting algorithm:
+ensemble.VotingClassfier(DT, BT, AB, voting = Soft, Hard)
+FinalModel.fit(X_train, Y_Train)
+**Check interim score on validation data**
+------
+Predict on Test data:
+Read Test Data
+Survived = FinalModel.Predict(X_test)
+-----
+Build an Excel with Test ID and Predicted o/p
+
+
