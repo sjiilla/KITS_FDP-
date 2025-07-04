@@ -69,12 +69,13 @@ X_train.info()
 y_train = titanic_train['Survived']
 
 #create estimators for voting classifier
-dt_estimator = tree.DecisionTreeClassifier(random_state=100)
-rf_estimator = ensemble.RandomForestClassifier(random_state=100)
-ada_estimator = ensemble.AdaBoostClassifier(random_state=100)
+dt_estimator = tree.DecisionTreeClassifier(max_depth=4)
+rf_estimator = ensemble.RandomForestClassifier(n_estimators= 50)
+ada_estimator = ensemble.AdaBoostClassifier(learning_rate= 0.1)
 
 voting_model = ensemble.VotingClassifier(estimators=[('dt', dt_estimator), ('rf', rf_estimator), ('ada', ada_estimator)])
 #Parameters to above 3 models
+#Alternative way to pass the parameters
 voting_params = {'dt__max_depth':[4], 'rf__n_estimators':[75], 'rf__max_features':[6,8], 'rf__max_depth':[7], 'ada__n_estimators':[25], 'ada__learning_rate':[0.2, 0.6]}
 FinalModel = model_selection.GridSearchCV(voting_model, voting_params, cv=10, n_jobs=6)
 FinalModel.fit(X_train, y_train)
