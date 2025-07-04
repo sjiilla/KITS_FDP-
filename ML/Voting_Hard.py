@@ -84,7 +84,7 @@ print(FinalModel.best_score_)
 print(FinalModel.best_params_)
 #print(FinalModel.score(X_train, y_train))
 
-X_test = titanic2[titanic_train.shape[0]:]
+X_test = titanic2[titanic_train.shape[0]:891]
 X_test.shape
 X_test.info()
 
