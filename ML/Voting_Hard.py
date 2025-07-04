@@ -63,32 +63,33 @@ titanic1.info()
 titanic2 = titanic1.drop(['PassengerId','Name','Age','Ticket','Cabin','Survived'], axis=1, inplace=False)
 titanic2.shape
 
-X_train = titanic2[0:891]
+X_train = titanic2[0:titanic_train.shape[0]]
 X_train.shape
 X_train.info()
 y_train = titanic_train['Survived']
 
 #create estimators for voting classifier
-dt_estimator = tree.DecisionTreeClassifier(max_depth=4)
-rf_estimator = ensemble.RandomForestClassifier(n_estimators= 50)
-ada_estimator = ensemble.AdaBoostClassifier(learning_rate= 0.1)
+dt_estimator = tree.DecisionTreeClassifier(random_state=100)
+rf_estimator = ensemble.RandomForestClassifier(random_state=100)
+ada_estimator = ensemble.AdaBoostClassifier(random_state=100)
 
-voting_model = ensemble.VotingClassifier(estimators=[('dt', dt_estimator), ('rf', rf_estimator), ('ada', ada_estimator)])
+#Soft voting with Weights
+voting_model = ensemble.VotingClassifier(estimators=[('dt', dt_estimator), ('rf', rf_estimator), ('ada', ada_estimator)], voting='soft', weights=[2,1,2])
+
 #Parameters to above 3 models
-#Alternative way to pass the parameters
-voting_params = {'dt__max_depth':[4], 'rf__n_estimators':[75], 'rf__max_features':[6,8], 'rf__max_depth':[7], 'ada__n_estimators':[25], 'ada__learning_rate':[0.2, 0.6]}
-FinalModel = model_selection.GridSearchCV(voting_model, voting_params, cv=10, n_jobs=6)
-FinalModel.fit(X_train, y_train)
-print(FinalModel.cv_results_)
-print(FinalModel.best_score_)
-print(FinalModel.best_params_)
-#print(FinalModel.score(X_train, y_train))
+voting_params = {'dt__max_depth':[3,5,7], 'rf__n_estimators':[50], 'rf__max_features':[5,6], 'rf__max_depth':[5], 'ada__n_estimators':[50]}
+grid_voting_estimator = model_selection.GridSearchCV(voting_model, voting_params, cv=10, n_jobs=6)
+grid_voting_estimator.fit(X_train, y_train)
+print(grid_voting_estimator.cv_results_)
+print(grid_voting_estimator.best_score_)
+print(grid_voting_estimator.best_params_)
+print(grid_voting_estimator.score(X_train, y_train))
 
-X_test = titanic2[titanic_train.shape[0]:891]
+X_test = titanic2[titanic_train.shape[0]:]
 X_test.shape
 X_test.info()
 
-titanic_test['Survived'] = FinalModel.predict(X_test)
+titanic_test['Survived'] = grid_voting_estimator.predict(X_test)
 os.chdir("C:/Users/S Jilla/")
 #Predictions using Voting classifier
-titanic_test.to_csv('submissionVoting.csv', columns=['PassengerId','Survived'],index=False)
+titanic_test.to_csv('submissionVotingSoft.csv', columns=['PassengerId','Survived'],index=False)
