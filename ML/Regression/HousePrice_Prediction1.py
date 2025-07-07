@@ -80,3 +80,36 @@ plt.show()
 house_train1 = house_data1[:house_train.shape[0]]
 #splitting test data as conctenated in the begining
 house_test1 = house_data1[house_train.shape[0]:]
+
+#Smooting the values. As the sale price is big
+house_train['log_sale_price'] = np.log(house_train['SalePrice'])
+#See how the data looks like with log values.
+sns.distplot(house_train['log_sale_price'])
+
+X_train = house_train1
+y_train = house_train['SalePrice']
+dt_estimator = tree.DecisionTreeRegressor(random_state=2017)
+
+#evaluate using rmse - 2
+#RMSE: Root Mean Squared Error
+def rmse(y_original,  y_pred):
+   return math.sqrt(metrics.mean_squared_error(y_original, y_pred))
+      
+res = model_selection.cross_val_score(dt_estimator, X_train, y_train, cv=10, scoring=metrics.make_scorer(rmse)).mean()
+
+dt_estimator.fit(X_train, y_train)
+#dt_estimator.feature_importances_
+
+#==============================================================================
+# dot_data = io.StringIO() 
+# tree.export_graphviz(dt_estimator, out_file = dot_data, feature_names = X_train.columns)
+# graph = pydot.graph_from_dot_data(dot_data.getvalue())
+# graph.write_pdf("reg-tree1.pdf")
+#==============================================================================
+
+X_test = house_test1
+log_sales_price = dt_estimator.predict(X_test)
+#convert log values back to orignal values by using exponential loss
+#house_test['SalePrice'] = np.exp(log_sales_price)
+house_test['SalePrice'] = log_sales_price
+house_test.to_csv("submission_House1.csv", columns=['Id','SalePrice'], index=False)
